@@ -1,24 +1,30 @@
 import request from '@/utils/request'
 
-export function login(data) {
+/**
+ * 登录接口
+ * @param {*} data 登录所需参数
+ * @returns
+ */
+export const loginApi = (data) => {
   return request({
-    url: '/vue-admin-template/user/login',
+    url: '/sys/login',
     method: 'post',
     data
   })
 }
 
-export function getInfo(token) {
+// 获取用户信息
+export const getUserInfoApi = () => {
   return request({
-    url: '/vue-admin-template/user/info',
-    method: 'get',
-    params: { token }
+    url: '/sys/profile',
+    method: 'post'
   })
 }
 
-export function logout() {
+// 获取员工基本信息
+export const getBaseUserInfoApi = (id) => {
   return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
+    url: `/sys/user/${id}`,
+    method: 'get'
   })
 }

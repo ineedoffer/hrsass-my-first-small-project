@@ -62,3 +62,46 @@
 //   // finish progress bar
 //   NProgress.done()
 // })
+
+import router from '@/router'
+import store from '@/store'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
+const whiteList = ['/login', '/404']
+// 只要发生页面跳转就需要前置守卫
+router.beforeEach((to, from, next) => {
+  NProgress.start()
+  const token = store.getters.token
+  if (token) {
+    // 有token的情况
+    if (to.path === '/login') {
+      next('/')
+      NProgress.done()
+    } else {
+      // 获取用户信息
+      if (Object.keys(store.state.user.userInfo).length <= 0) {
+        store.dispatch('user/getUserInfo').then(() => {
+          next()
+        })
+      } else {
+        next()
+      }
+
+      NProgress.done()
+    }
+  } else {
+    // 没token，过期的情况
+    if (whiteList.includes(to.path)) {
+      next()
+      NProgress.done()
+    } else {
+      next('/login')
+      NProgress.done()
+    }
+  }
+})
+
+router.afterEach((to, from) => {
+  NProgress.done()
+})

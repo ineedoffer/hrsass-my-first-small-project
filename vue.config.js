@@ -13,7 +13,7 @@ const name = defaultSettings.title || 'vue Admin Template' // page title
 // For example, Mac: sudo npm run
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
-const port = process.env.port || process.env.npm_config_port || 9528 // dev port
+const port = process.env.VUE_APP_PORT// dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -35,6 +35,13 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    // 配置pathRewrite将api部分进行替换
+    proxy: {
+      '/api': {
+        target: 'http://ihrm.itheima.net'
+        // pathRewrite: { '^/api': '' }
+      }
     }
   },
   configureWebpack: {
